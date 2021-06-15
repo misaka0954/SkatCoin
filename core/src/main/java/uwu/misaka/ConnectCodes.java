@@ -1,3 +1,5 @@
+package uwu.misaka;
+
 public class ConnectCodes {
     public final String SERVER_HEADER="0x";
     public final String CLIENT_HEADER="0h";

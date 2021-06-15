@@ -1,5 +1,3 @@
 rootProject.name = 'SkatCoin'
-include 'core'
-include 'pc'
-include 'server'
+include 'core','pc','server'
 

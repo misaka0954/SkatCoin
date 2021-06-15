@@ -1,3 +1,5 @@
+package uwu.misaka;
+
 import java.util.ArrayList;
 
 public class Wallet {

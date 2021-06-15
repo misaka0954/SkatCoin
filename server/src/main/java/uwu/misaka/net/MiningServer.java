@@ -1,4 +1,4 @@
-package net;
+package uwu.misaka.net;
 
 import java.io.IOException;
 import java.net.ServerSocket;

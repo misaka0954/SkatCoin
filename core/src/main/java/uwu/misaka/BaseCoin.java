@@ -1,3 +1,5 @@
+package uwu.misaka;
+
 public class BaseCoin {
     public String coin_id;
     public String walletId;

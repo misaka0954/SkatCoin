@@ -1,4 +1,8 @@
-import net.MiningServer;
+package uwu.misaka;
+
+import uwu.misaka.net.MiningServer;
+
+import java.util.ArrayList;
 
 public class SkatCoinServer {
     //public static ArrayList<Wallet> wallets = new ArrayList<>();
