@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+}
+
+group 'uwu.misaka'
+version '0.1-HENTAI'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+}
+
+test {
+    useJUnitPlatform()
+}
