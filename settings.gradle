@@ -1,4 +1,5 @@
 rootProject.name = 'SkatCoin'
 include 'core'
 include 'pc'
+include 'server'
 
