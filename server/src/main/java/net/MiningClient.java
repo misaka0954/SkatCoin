@@ -32,7 +32,20 @@ public class MiningClient {
     }
 
     public void handleInput(String s){
+        //if(!s.startsWith(ConnectCodes.CLIENT_HEADER)){
+            //writeLn(ConnectCodes.CLOSE_CHANNEL_FMS);
+            close();
+        //    return;}
+    }
 
+    public void close(){
+        try {
+            br.close();
+            bw.close();
+            socket.close();
+        }catch (Exception ignored){
+
+        }
     }
 
     public class Reader extends Thread{
@@ -45,13 +58,7 @@ public class MiningClient {
                 }catch (Exception e){
                     break;
                 }
-                try {
-                    br.close();
-                    bw.close();
-                    socket.close();
-                }catch (Exception ignored){
-
-                }
+               close();
             }
         }
     }

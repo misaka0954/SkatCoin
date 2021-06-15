@@ -1,4 +1,7 @@
 public class ConnectCodes {
+    public final String SERVER_HEADER="0x";
+    public final String CLIENT_HEADER="0h";
+
     public final String REQUEST_LOGIN = "0x0001";
     public final String REQUEST_PASSWORD = "0x0002";
     public final String USER_NOT_EXIST = "0x0003";
