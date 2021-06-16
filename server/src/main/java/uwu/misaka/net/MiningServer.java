@@ -20,11 +20,11 @@ public class MiningServer {
     public class Connector extends Thread{
         @Override
         public void run() {
+            System.out.println("[ClientConnector]   ОЖИДАНИЕ СОЕДИНЕНИЙ");
+
             while(true){
-                System.out.println("[ClientConnector]   Waiting for connection");
                 try {
                     new MiningClient(server.accept());
-                    System.out.println("[ClientConnector]   Mining Client accepted");
                 } catch (IOException e) {
                     e.printStackTrace();
                     return;

@@ -23,8 +23,7 @@ public class MiningClient {
         bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         writeLn(ConnectCodes.REQUEST_LOGIN);
         String login = br.readLine();
-        System.out.println(login);
-        wallet = SkatCoinServer.walletDao.getById(login);
+        wallet = SkatCoinServer.walletDao.getByLogin(login);
         if (wallet == null) {
             writeLn(ConnectCodes.USER_NOT_EXIST);
         } else {
@@ -38,8 +37,12 @@ public class MiningClient {
                 connection = new Reader();
                 connection.start();
                 SkatCoinServer.activeWallets.add(wallet);
+                System.out.println("[ClientConnector]   "+wallet.login+" вошел в систему");
+                return;
             } else {
+                writeLn(ConnectCodes.PASSWORD_INVALID);
                 writeLn(ConnectCodes.CLOSE_CHANNEL_FMS);
+                System.out.println("[ClientConnector]   "+wallet.login+" ввел неверный пароль");
                 close();
                 return;
             }
@@ -61,6 +64,8 @@ public class MiningClient {
             SkatCoinServer.walletDao.save(wallet);
             System.out.println(wallet.toString());
             writeLn(ConnectCodes.REGISTRATION_SUCCES);
+            writeLn(ConnectCodes.CLOSE_CHANNEL_FMS);
+            System.out.println("[ClientConnector]   "+wallet.login+" зарегистрирован");
         } catch (Exception ignored) {
             ignored.printStackTrace();
         }

@@ -49,6 +49,22 @@ public class WalletDao extends AbstractDao<Wallet>{
         }
     }
 
+    public Wallet getByLogin(String login){
+        Objects.requireNonNull(login, "login");
+        try(PreparedStatement statement = preparedStatement("select * from wallet where login = ?;", login); ResultSet set = statement.executeQuery()){
+            if(set.next()){
+                Wallet wallet = new Wallet(set.getString("id"), set.getString("login"), set.getString("password"));
+                wallet.walletCoins=SkatCoinServer.baseCoinDao.getCoinsByWalletId(wallet.id);
+                return wallet;
+            }
+            return null;
+        }catch(Throwable t){
+            t.printStackTrace();
+            return null;
+        }
+    }
+
+
     @Override
     public void save(Wallet entity){
         Objects.requireNonNull(entity, "entity");
