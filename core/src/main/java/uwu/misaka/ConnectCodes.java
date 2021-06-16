@@ -12,6 +12,11 @@ public class ConnectCodes {
     public static String SEND_MINING_IMAGE = "0x0006";
     public static String SEND_BALANCE = "0x0007";
     public static String ALREADY_CONNECTED = "0x0008";
+    public static String TRANSFER_TARGET_ERROR = "0x0009";
+    public static String NOT_ENOUGH_SKATCOINS = "0x0010";
+    public static String SUCCES_SKATCOINS_TRANSFER = "0x0011";
+    public static String SUCCES_SOLVING = "0x0012";
+    public static String SHIZA_SOLVING = "0x0013";
 
     public static String REQUEST_MINING_PICTURE = "0h001";
     public static String TRANSFER_SKATCOINS = "0h002";
