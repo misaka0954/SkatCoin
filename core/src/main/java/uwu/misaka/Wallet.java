@@ -6,7 +6,7 @@ public class Wallet {
     public String id;
     public String login;
     public String password;
-    public List<BaseCoin> walletCoins;
+    public List<String> walletCoins;
 
     public Wallet(String id, String login, String password) {
         this.id = id;

@@ -47,6 +47,20 @@ public class BaseCoinDao extends AbstractDao<BaseCoin>{
         }
     }
 
+    public List<String> getCoinsByWalletId(String walletId){
+        Objects.requireNonNull(walletId, "id");
+        ArrayList<String> rtnSet = new ArrayList<>();
+        try(PreparedStatement statement = preparedStatement("select * from base_coin where wallet_id = ?;", walletId); ResultSet set = statement.executeQuery()){
+            while(set.next()){
+                 rtnSet.add(set.getString("id"));
+            }
+            return rtnSet;
+        }catch(Throwable t){
+            t.printStackTrace();
+            return null;
+        }
+    }
+
     @Override
     public void save(BaseCoin entity){
         Objects.requireNonNull(entity, "entity");
