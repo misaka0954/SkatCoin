@@ -17,6 +17,9 @@ public class ConnectCodes {
     public static String SUCCES_SKATCOINS_TRANSFER = "0x0011";
     public static String SUCCES_SOLVING = "0x0012";
     public static String SHIZA_SOLVING = "0x0013";
+    public static String REGISTRATION_REQUEST = "0x0014";
+    public static String REGISTRATION_NAME_USED = "0x0015";
+    public static String REGISTRATION_SUCCES = "0x0016";
 
     public static String REQUEST_MINING_PICTURE = "0h001";
     public static String TRANSFER_SKATCOINS = "0h002";
