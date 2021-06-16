@@ -37,6 +37,7 @@ public class MiningClient {
                 connection = new Reader();
                 connection.start();
                 SkatCoinServer.activeWallets.add(wallet);
+                writeLn(ConnectCodes.LOGIN_SUCCES);
                 System.out.println("[ClientConnector]   "+wallet.login+" вошел в систему");
                 return;
             } else {
@@ -130,12 +131,12 @@ public class MiningClient {
 
     public void transferSkatCoins(String transfer_request) {
         transfer_request = transfer_request.substring(5);
-        Wallet target = SkatCoinServer.walletDao.getById(transfer_request.split("||")[0]);
+        Wallet target = SkatCoinServer.walletDao.getByLogin(transfer_request.split("#")[0]);
         if (target == null) {
             writeLn(ConnectCodes.TRANSFER_TARGET_ERROR);
             return;
         }
-        int transferCoins = Integer.parseInt(transfer_request.split("||")[1]);
+        int transferCoins = Integer.parseInt(transfer_request.split("#")[1]);
         if (transferCoins > wallet.walletCoins.size()) {
             writeLn(ConnectCodes.NOT_ENOUGH_SKATCOINS);
             return;
@@ -147,7 +148,7 @@ public class MiningClient {
             wallet.walletCoins.remove(0);
         }
         if (SkatCoinServer.activeWallets.contains(target)) {
-            nya.forEach(c -> target.walletCoins.add(c));
+            target.walletCoins.addAll(nya);
         }
         nya.forEach(cid -> {
             BaseCoin c = SkatCoinServer.baseCoinDao.getById(cid);
@@ -155,6 +156,7 @@ public class MiningClient {
             SkatCoinServer.baseCoinDao.save(c);
         });
         writeLn(ConnectCodes.SEND_BALANCE + wallet.walletCoins.size());
+        writeLn(ConnectCodes.SUCCES_SKATCOINS_TRANSFER);
     }
 
     public void parseAnswer(String code) {
