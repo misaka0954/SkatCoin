@@ -7,7 +7,6 @@ import uwu.misaka.Wallet;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.*;
 import java.net.Socket;
@@ -143,9 +142,9 @@ public class MiningClient {
             br.close();
             bw.close();
             socket.close();
-            connection.interrupt();
             SkatCoinServer.walletDao.save(wallet);
             SkatCoinServer.activeWallets.remove(wallet);
+            connection.interrupt();
         } catch (Exception ignored) {
 
         }
