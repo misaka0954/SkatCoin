@@ -5,6 +5,10 @@ import uwu.misaka.ConnectCodes;
 import uwu.misaka.SkatCoinServer;
 import uwu.misaka.Wallet;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -23,8 +27,8 @@ public class MiningClient {
         bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         writeLn(ConnectCodes.REQUEST_LOGIN);
         String login = br.readLine();
-        wallet = SkatCoinServer.walletDao.getByLogin(login);
-        if (wallet == null) {
+        wallet = SkatCoinServer.walletDao.getByLogin(login.substring(5));
+        if (wallet == null||!login.startsWith(ConnectCodes.SENDED_LOGIN)) {
             writeLn(ConnectCodes.USER_NOT_EXIST);
         } else {
             if (SkatCoinServer.activeWallets.contains(wallet)) {
@@ -33,7 +37,8 @@ public class MiningClient {
                 return;
             }
             writeLn(ConnectCodes.REQUEST_PASSWORD);
-            if (br.readLine().equals(wallet.password)) {
+            String password = br.readLine();
+            if (password.substring(5).equals(wallet.password)&&password.startsWith(ConnectCodes.SENDED_PASSWORD)) {
                 connection = new Reader();
                 connection.start();
                 SkatCoinServer.activeWallets.add(wallet);
@@ -63,22 +68,20 @@ public class MiningClient {
             }
             Wallet wallet = new Wallet(Objects.hash(login) + "", login, password);
             SkatCoinServer.walletDao.save(wallet);
-            System.out.println(wallet.toString());
             writeLn(ConnectCodes.REGISTRATION_SUCCES);
             writeLn(ConnectCodes.CLOSE_CHANNEL_FMS);
             System.out.println("[ClientConnector]   "+wallet.login+" зарегистрирован");
-        } catch (Exception ignored) {
-            ignored.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    public boolean writeLn(String line) {
+    public void writeLn(String line) {
         try {
             bw.write(line + "\n");
             bw.flush();
-            return true;
         } catch (Exception e) {
-            return false;
+            close();
         }
     }
 
@@ -100,7 +103,7 @@ public class MiningClient {
             return;
         }
         if (s.startsWith(ConnectCodes.REQUEST_MINING_PICTURE)) {
-            //TODO отправка майнинговой картинки
+            sendMiningPicture();
             System.out.println("[" + wallet.login + "] Запросил изображение");
             return;
         }
@@ -113,6 +116,25 @@ public class MiningClient {
             transferSkatCoins(s);
             System.out.println("[" + wallet.login + "] Запросил перевод");
             return;
+        }
+    }
+
+    public void sendMiningPicture(){
+        File f = new File("trueornya.png");
+        if(f.getPath().contains("true")){
+            connection.answer=true;
+        }
+        if(f.getPath().contains("false")){
+            connection.answer=false;
+        }
+        try {
+            Image image = ImageIO.read(f);
+            ByteArrayOutputStream s = new ByteArrayOutputStream();
+            ImageIO.write((RenderedImage) image,"png",s);
+            writeLn(ConnectCodes.SEND_MINING_IMAGE+s);
+            connection.isAnswer=true;
+        }catch (Exception e){
+           e.printStackTrace();
         }
     }
 
@@ -183,10 +205,11 @@ public class MiningClient {
                     String input = br.readLine();
                     handleInput(input);
                 } catch (Exception e) {
+                    System.out.println("[" + wallet.login + "] Прислал ошибку");
                     break;
                 }
-                close();
             }
+            close();
         }
     }
 }
